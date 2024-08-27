@@ -10,11 +10,11 @@ public class FundEntity {
     private Double amount;
     private String timestamp;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "campaign_id")
     private CampaignEntity campaign;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "ngo_id")
     private NgoEntity ngo;
 

@@ -11,17 +11,19 @@ public class DonationEntity {
 	    private Integer quantity;
 	    private String description;
 
-	    @ManyToOne
+
+	    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	    @JoinColumn(name = "donor_id")
 	    private DonerEntity donor;
 
-	    @ManyToOne
+	    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	    @JoinColumn(name = "campaign_id")
 	    private CampaignEntity campaign;
 
-	    @ManyToOne
+	    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	    @JoinColumn(name = "payment_id")
 	    private PaymentEntity payment;
+
 
 		public DonationEntity() {
 			super();

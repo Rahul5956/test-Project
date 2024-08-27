@@ -1,0 +1,45 @@
+package com.app.service;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.app.dto.LoginRequest;
+import com.app.entity.DonerEntity;
+import com.app.entity.NgoEntity;
+import com.app.repositories.DonerRepository;
+import com.app.repositories.NgoRepository;
+import com.app.security.JwtTokenProvider;
+
+@Service
+public class AuthService {
+
+    @Autowired
+    private DonerRepository donorRepository;
+
+    @Autowired
+    private NgoRepository ngoRepository;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider; // A utility class to generate JWT tokens
+
+    public String authenticate(LoginRequest loginRequest) {
+        // Validate role and authenticate based on it
+        if ("donor".equals(loginRequest.getRole())) {
+            DonerEntity donor = donorRepository.findByEmailAndPassword(loginRequest.getEmail(), loginRequest.getPassword());
+            if (donor == null) {
+                throw new RuntimeException("Invalid credentials");
+            }
+            return jwtTokenProvider.createToken(donor.getEmail(), donor.getRole());
+        } else if ("ngo".equals(loginRequest.getRole())) {
+            NgoEntity ngo = ngoRepository.findByEmailAndPassword(loginRequest.getEmail(), loginRequest.getPassword());
+            if (ngo == null) {
+                throw new RuntimeException("Invalid credentials");
+            }
+            return jwtTokenProvider.createToken(ngo.getEmail(), ngo.getRole());
+        } else {
+            throw new RuntimeException("Invalid role");
+        }
+    }
+}
+

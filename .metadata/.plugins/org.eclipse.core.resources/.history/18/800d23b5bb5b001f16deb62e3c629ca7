@@ -1,0 +1,45 @@
+package com.app.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.app.dto.LoginRequest;
+import com.app.dto.LoginResponse;
+import com.app.security.JwtTokenProvider;
+import com.app.service.AuthService;
+
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+
+    @Autowired
+    private AuthService authService;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+        // Authenticate user and generate token
+        String token = authService.authenticate(loginRequest);
+
+        // Set token in the response header
+        response.setHeader("Authorization", "Bearer " + token);
+
+        return ResponseEntity.ok(new LoginResponse(token));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
+        // Clear the Authorization header (optional for JWT)
+        response.setHeader("Authorization", "");
+
+        // If using sessions, invalidate the session
+        request.getSession().invalidate();
+
+        return ResponseEntity.ok("Logged out successfully");
+    }
+}

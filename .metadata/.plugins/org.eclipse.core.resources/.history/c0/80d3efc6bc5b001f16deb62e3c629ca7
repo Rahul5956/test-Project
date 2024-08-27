@@ -1,0 +1,36 @@
+package com.app.service;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AuthService {
+
+    public void authenticate(com.app.dto.LoginRequest loginRequest) {
+        // Example placeholder for actual authentication logic
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("User is not authenticated");
+        }
+
+        // Assuming roles are retrieved and validated here
+        String userRole = getUserRole(authentication);
+        validateRole(userRole);
+    }
+
+    private String getUserRole(Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        return userDetails.getAuthorities().stream()
+                .map(grantedAuthority -> grantedAuthority.getAuthority())
+                .findFirst()
+                .orElse("ROLE_USER"); // Default role
+    }
+
+    private void validateRole(String role) {
+        if (!"ROLE_ADMIN".equals(role) && !"ROLE_USER".equals(role)) {
+            throw new RuntimeException("Invalid role");
+        }
+    }
+}

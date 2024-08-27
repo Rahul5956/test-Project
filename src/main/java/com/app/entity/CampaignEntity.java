@@ -1,6 +1,8 @@
 package com.app.entity;
 
 import javax.persistence.*;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -10,21 +12,17 @@ public class CampaignEntity {
 	    private Long id;
 	    private String title;
 	    private String description;
-	    private String startDate;
-	    private String endDate;
+	    private LocalDate startDate;
+	    private LocalDate endDate;
 	    private Double goalAmount;
 	    private Double currentAmount;
-
-	    @ManyToOne
-	    @JoinColumn(name = "ngo_id")
-	    private NgoEntity ngo;
 
 		public CampaignEntity() {
 			super();
 			// TODO Auto-generated constructor stub
 		}
 
-		public CampaignEntity(Long id, String title, String description, String startDate, String endDate,
+		public CampaignEntity(Long id, String title, String description, LocalDate startDate, LocalDate endDate,
 				Double goalAmount, Double currentAmount, NgoEntity ngo) {
 			super();
 			this.id = id;
@@ -34,11 +32,10 @@ public class CampaignEntity {
 			this.endDate = endDate;
 			this.goalAmount = goalAmount;
 			this.currentAmount = currentAmount;
-			this.ngo = ngo;
 		}
 
-		public CampaignEntity(String title, String description, String startDate, String endDate, Double goalAmount,
-				Double currentAmount, NgoEntity ngo) {
+		public CampaignEntity(String title, String description, LocalDate startDate, LocalDate endDate, Double goalAmount,
+				Double currentAmount) {
 			super();
 			this.title = title;
 			this.description = description;
@@ -46,7 +43,7 @@ public class CampaignEntity {
 			this.endDate = endDate;
 			this.goalAmount = goalAmount;
 			this.currentAmount = currentAmount;
-			this.ngo = ngo;
+			
 		}
 
 		public Long getId() {
@@ -73,19 +70,19 @@ public class CampaignEntity {
 			this.description = description;
 		}
 
-		public String getStartDate() {
+		public LocalDate getStartDate() {
 			return startDate;
 		}
 
-		public void setStartDate(String startDate) {
+		public void setStartDate(LocalDate startDate) {
 			this.startDate = startDate;
 		}
 
-		public String getEndDate() {
+		public LocalDate getEndDate() {
 			return endDate;
 		}
 
-		public void setEndDate(String endDate) {
+		public void setEndDate(LocalDate endDate) {
 			this.endDate = endDate;
 		}
 
@@ -104,14 +101,7 @@ public class CampaignEntity {
 		public void setCurrentAmount(Double currentAmount) {
 			this.currentAmount = currentAmount;
 		}
-
-		public NgoEntity getNgo() {
-			return ngo;
-		}
-
-		public void setNgo(NgoEntity ngo) {
-			this.ngo = ngo;
-		}
+		
 	    
     
 }

@@ -11,37 +11,31 @@ public class PaymentEntity {
     private String timestamp;
     private String status;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "campaign_id")
     private CampaignEntity campaign;
-
-    @ManyToOne
-    @JoinColumn(name = "donor_id")
-    private DonerEntity donor;
 
 	public PaymentEntity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public PaymentEntity(Long id, Double amount, String timestamp, String status, CampaignEntity campaign,
-			DonerEntity donor) {
+	public PaymentEntity(Long id, Double amount, String timestamp, String status, CampaignEntity campaign) {
 		super();
 		this.id = id;
 		this.amount = amount;
 		this.timestamp = timestamp;
 		this.status = status;
 		this.campaign = campaign;
-		this.donor = donor;
+		
 	}
 
-	public PaymentEntity(Double amount, String timestamp, String status, CampaignEntity campaign, DonerEntity donor) {
+	public PaymentEntity(Double amount, String timestamp, String status, CampaignEntity campaign) {
 		super();
 		this.amount = amount;
 		this.timestamp = timestamp;
 		this.status = status;
 		this.campaign = campaign;
-		this.donor = donor;
 	}
 
 	public Long getId() {
@@ -83,17 +77,7 @@ public class PaymentEntity {
 	public void setCampaign(CampaignEntity campaign) {
 		this.campaign = campaign;
 	}
-
-	public DonerEntity getDonor() {
-		return donor;
-	}
-
-	public void setDonor(DonerEntity donor) {
-		this.donor = donor;
-	}
-
     
 }
-
 
 
